@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PreisFinder</title>
+<style>
+body{font-family:-apple-system,sans-serif;background:#f5f5f7;margin:0;padding:25px 16px}
+main{max-width:700px;margin:auto}
+h1{font-size:36px}
+input{width:65%;padding:15px;border:1px solid #ccc;border-radius:14px;font-size:17px}
+button{padding:15px;border:0;border-radius:14px;background:#111;color:white;font-weight:bold}
+.card{background:white;padding:17px;border-radius:18px;margin:12px 0}
+.price{font-size:25px;font-weight:bold}
+.meta{color:#666;font-size:14px}
+.best{border:2px solid #111}
+</style>
+</head>
+
+<body>
+<main>
+
+<h1>PreisFinder</h1>
+
+<p>🔎 Universeller Preisvergleich</p>
+
+<input id="q" placeholder="Produkt suchen…">
+<button onclick="suchen()">Suchen</button>
+
+<div id="status"></div>
+<div id="ergebnisse"></div>
+
+<script>
+
+function suchen(){
+
+let produkt=document.getElementById("q").value.trim();
+
+if(!produkt){
+document.getElementById("status").innerText=
+"Bitte Produkt eingeben.";
+return;
+}
+
+let haendler=[
+["Conrad",149.90,0],
+["Völkner",152.90,0],
+["eBay",158.00,0],
+["Reichelt",155.00,4.95]
+];
+
+haendler.sort((a,b)=>
+(a[1]+a[2])-(b[1]+b[2])
+);
+
+document.getElementById("status").innerText=
+"Testsuche für: "+produkt;
+
+let html="";
+
+haendler.forEach((h,i)=>{
+
+let gesamt=h[1]+h[2];
+
+html+=`
+<div class="card ${i===0?"best":""}">
+
+${i===0?"🏆 GÜNSTIGSTES ANGEBOT":""}
+
+<h3>${h[0]}</h3>
+
+<div>${produkt}</div>
+
+<div class="price">
+${gesamt.toFixed(2).replace(".",",")} €
+</div>
+
+<div class="meta">
+Artikel: ${h[1].toFixed(2).replace(".",",")} €<br>
+Versand: ${h[2].toFixed(2).replace(".",",")} €
+</div>
+
+</div>
+`;
+
+});
+
+document.getElementById("ergebnisse").innerHTML=html;
+
+}
+
+</script>
+
+</main>
+</body>
+</html>
